@@ -1,0 +1,39 @@
+{
+  "name": "simple-piskel-clone",
+  "version": "1.0.0",
+  "description": "Task Simple Piskel Clone",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --open --watch --hot",
+    "lint": "eslint src/",
+    "test": "jest",
+    "test-watch": "jest --watch",
+    "coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rolling-scopes-school/rekaterina-RS2019Q3.git"
+  },
+  "author": "Katsiaryna Rudzenka",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.7",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.4.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-import": "^2.19.1",
+    "copy-webpack-plugin": "^5.1.1",
+    "html-webpack-plugin": "^3.2.0",
+    "url-loader": "^3.0.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "jest": "^24.9.0",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
+  }
+}
