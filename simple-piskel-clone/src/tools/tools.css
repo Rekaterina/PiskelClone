@@ -1,0 +1,140 @@
+.tools-section {
+  width: 102px;
+  margin-top: 50px;
+}
+
+.pen-size-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+
+.pen-size-item {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+
+.pen-size1,
+.pen-size2,
+.pen-size3,
+.pen-size4 {
+  background-color: rgb(255, 255, 255);
+}
+
+.pen-size1 {
+  width: 7px;
+  height: 7px;
+}
+
+.pen-size2 {
+  width: 9px;
+  height: 9px;
+}
+
+.pen-size3 {
+  width: 11px;
+  height: 11px;
+}
+
+.pen-size4 {
+  width: 13px;
+  height: 13px;
+}
+
+.pen-size-item:hover::after {
+  bottom: 120%;
+  left: 10%;
+  white-space: nowrap;
+}
+
+.tools-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tool-item {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  margin: 0.5px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.tool-item:hover::after {
+  bottom: 60%;
+  left: 115%;
+  white-space: nowrap;
+}
+
+.fa-pencil-alt,
+.fa-eraser,
+.fa-fill-drip,
+.fa-pencil-ruler {
+  color: rgb(240, 240, 240);
+  font-size: 20px;
+}
+
+.color-item {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  margin-top: 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+.color-item:hover::after {
+  width: 100px;
+  left: 120%;
+  bottom: 30%;
+}
+
+.color-swap {
+  width: 30px;
+  height: 25px;
+  margin: 3px 0 0 34px;
+  color: rgb(255, 255, 255);
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 5px;
+}
+
+.color-swap:hover::after {
+  left: 120%;
+  white-space: nowrap;
+}
+
+.canvas-size-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.canvas-size-item {
+  width: 100px;
+  height: 40px;
+  margin: 0.5px;
+  color: rgb(240, 240, 240);
+  font-size: 15px;
+  border-radius: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.canvas-size-item:hover::after {
+  left: 110%;
+  bottom: 50%;
+  white-space: nowrap;
+}
+
+.active {
+  border: 2px solid rgb(255, 215, 0);
+}

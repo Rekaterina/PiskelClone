@@ -8,8 +8,81 @@
   <title>Piskel Clone</title>
 </head>
 <body>
-  <a href="app.html">Start</a>
-  <img src="./img/gif.gif">
-  <img src="./img/png.png">
+  <div class="wrapper">
+    <header class="header">
+      <h1 class="app-title">Piskel Clone</h1>
+      <button class="back-btn gold-button hidden" data-title="Back to Landing Page"><i class="fas fa-arrow-left"></i></button>
+    </header>
+    <main class="main">
+      <section class="landing-page">
+        <div class="landing-page-main">
+          <section class="app-info-container">
+            <div class="app-description-container">
+              <p class="app-description-text">Piskel Clone is an online editor for animated sprites.</p>
+              <button class="start-btn gold-button">Start</button>
+            </div>
+            <div class="functionality-container">
+              <p class="functionality-title">Application functionality</p>
+                <ul class="functionality-list">
+                  <li class="functionality-list-item"><span>Tools: </span>pen, stroke, eraser, color select (primary/secondary), paint bucket.</li>
+                  <li class="functionality-list-item"><span>Сanvas scaling: </span>32x32 / 64x64 / 128x128 units</li>
+                  <li class="functionality-list-item"><span>Frames: </span>ability to add, delete, reorder, duplicate.</li>
+                  <li class="functionality-list-item"><span>Preview: </span>ability to animate the created frames, full screen mode.</li>
+                </ul>
+            </div>
+          </section>
+          <section class="images-container">
+            <div class="app-screenshot"></div>
+            <div class="animation-container">
+              <p class="animation-title">Animation examples</p>
+              <div class="animation-image">
+                <img src="./img/animation1.gif" alt="animation" class="animation-image-item">
+                <img src="./img/animation2.gif" alt="animation" class="animation-image-item">
+                <img src="./img/animation3.gif" alt="animation" class="animation-image-item">
+              </div>
+            </div>
+          </section>
+        </div>
+        <section class="author-info">
+          <p class="author-title">Created by Ekaterina Rudenko</p>
+          <div class="contacts">
+            <a href="https://github.com/Rekaterina"><i class="fab fa-github"></i></a>
+            <a href="https://t.me/rekaterina"><i class="fab fa-telegram"></i></a>
+          </div>
+        </section>
+      </section>
+      <section class="app-page hidden">
+        <section class="tools-section">
+          <div class="pen-size-container">
+            <div class="pen-size-item pen-size-item1 title" data-title="Pen size 1px"><div class="pen-size1"></div></div>
+            <div class="pen-size-item pen-size-item2 title" data-title="Pen size 2px"><div class="pen-size2"></div></div>
+            <div class="pen-size-item pen-size-item3 title" data-title="Pen size 3px"><div class="pen-size3"></div></div>
+            <div class="pen-size-item pen-size-item4 title" data-title="Pen size 4px"><div class="pen-size4"></div></div>
+          </div>
+          <div class="tools-container">
+            <button class="tool-item pen-tool title" data-title="Pen tool"><i class="fas fa-pencil-alt"></i></button>
+            <button class="tool-item eraser-tool title" data-title="Eraser tool"><i class="fas fa-eraser"></i></button>
+            <button class="tool-item paint-bucket-tool title" data-title="Paint bucket tool"><i class="fas fa-fill-drip"></i></button>
+            <button class="tool-item stroke-tool title" data-title="Stroke tool"><i class="fas fa-pencil-ruler"></i></button>
+          </div>
+          <div class="color-select-container">
+            <input type="color" class="color-item primary-color title" value="#ffd700" data-title="Primary - left mouse button">
+            <input type="color" class="color-item secondary-color title" data-title="Secondary - left mouse button">
+            <button class="color-swap title" data-title="Swap colors"><i class="fas fa-sync"></i></button>
+          </div>
+          <div class="canvas-size-container">
+            <button class="canvas-size-item canvas-size-item1 title" data-title="Canvas size">32x32</button>
+            <button class="canvas-size-item canvas-size-item2 title" data-title="Canvas size">64x64</button>
+            <button class="canvas-size-item canvas-size-item3 title" data-title="Canvas size">128x128</button>
+          </div>
+        </section>
+        <section class="frames-section"></section>
+        <section class="canvas-container">
+          <canvas class="canvas"></canvas>
+        </section>
+        <section class="preview-section"></section>
+      </section>
+    </main>
+  </div>
 </body>
 </html>

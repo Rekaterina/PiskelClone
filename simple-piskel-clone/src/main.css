@@ -1,0 +1,74 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.wrapper {
+  height: 100vh;
+  font-family: "Arial", "sans-serif";
+  user-select: none;
+}
+
+li {
+  list-style: none;
+}
+
+button {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  cursor: pointer;
+}
+
+.app-page {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  padding: 1vh 1vw;
+}
+
+.title:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgb(0, 0, 0);
+  border-radius: 3px;
+  background-color: rgb(255, 215, 0, 0.8);
+  z-index: 1;
+}
+
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 512px;
+  height: 512px;
+  margin-top: 10vh;
+  background: url('./img/canvas-bg.png') repeat;
+}
+
+.canvas {
+  image-rendering: pixelated;
+}
+
+.canvas-scale1 {
+  transform: scale(16);
+}
+
+.canvas-scale2 {
+  transform: scale(8);
+}
+
+.canvas-scale3 {
+  transform: scale(4);
+}
+
+.hidden {
+  display: none;
+}
