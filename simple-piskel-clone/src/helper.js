@@ -1,7 +1,30 @@
 import {
   CANVAS_SIZE,
-  CANVAS_SCALE_CLASSES,
+  VALUE_OF_ALPHA,
+  STEP_OF_RGB_COLOR,
 } from './constants';
+
+const createNewElement = (element, ...classes) => {
+  const newElement = document.createElement(element);
+  classes.forEach((item) => {
+    newElement.classList.add(item);
+  });
+  return newElement;
+};
+
+const appendChildren = (parent, ...children) => {
+  children.forEach((item) => {
+    parent.appendChild(item);
+  });
+};
+
+const addTextNode = (element, text) => element.appendChild(document.createTextNode(text));
+
+const removeChildNode = (...elements) => {
+  elements.forEach((item) => {
+    item.removeChild(item.childNodes[0]);
+  });
+};
 
 const toggleClass = (classItem, ...elements) => {
   elements.forEach((item) => {
@@ -56,93 +79,106 @@ const setLocalStorageState = (arr, object) => {
   });
 };
 
-const changeCanvasSize = (element, index) => {
+const getLocalStorageFrameState = (storageArray, stateArray) => {
+  const arr = stateArray;
+  storageArray.map((item, index) => {
+    if (localStorage.getItem(`${item}`) !== 'undefined') {
+      arr[index] = localStorage.getItem(`${item}`);
+    }
+    return stateArray;
+  });
+};
+
+const setLocalStorageFrameState = (storageArray, stateArray) => {
+  storageArray.forEach((item, index) => {
+    localStorage.setItem(`${item}`, stateArray[index]);
+  });
+};
+
+const changeCanvasSize = (element, index, classes) => {
   const elem = element;
   elem.width = CANVAS_SIZE[Object.keys(CANVAS_SIZE)[index]];
   elem.height = CANVAS_SIZE[Object.keys(CANVAS_SIZE)[index]];
-  addClass(CANVAS_SCALE_CLASSES[index], elem);
+  addClass(classes[index], elem);
 };
 
-const fill = (elem, startX, startY, size) => elem.getContext('2d').fillRect(startX, startY, size, size);
+const extractRgbColor = (dataArr) => `rgb(${dataArr[0]}, ${dataArr[1]}, ${dataArr[2]})`;
 
-const line = (event, startX, startY, func) => {
-  const currentX = event.offsetX;
-  const currentY = event.offsetY;
-  const deltaX = Math.abs(currentX - startX);
-  const deltaY = Math.abs(currentY - startY);
-  const dirX = startX < currentX ? 1 : -1;
-  const dirY = startY < currentY ? 1 : -1;
-  let error = deltaX - deltaY;
-  while (!(startX === currentX && startY === currentY)) {
-    const e2 = error;
-    if (e2 > -deltaY) {
-      error -= deltaY;
-      startX += dirX;
-    }
+const rgbToHexColor = (rgb) => {
+  const arrOfValue = rgb.replace(/[^\d,]/g, '').split(',');
+  const r = (+arrOfValue[0]).toString(16);
+  const g = (+arrOfValue[1]).toString(16);
+  const b = (+arrOfValue[2]).toString(16);
+  return `#${
+    (r.length === 1 ? `0${r}` : r)
+        + (g.length === 1 ? `0${g}` : g)
+        + (b.length === 1 ? `0${b}` : b)}`;
+};
 
-    if (e2 < deltaX) {
-      error += deltaX;
-      startY += dirY;
+const hexToRgbColorValueArray = (hex) => {
+  const arrOfHexValue = hex.slice(1).match(/.{2}/g);
+  const arrOfRgbValue = [];
+
+  arrOfRgbValue[0] = parseInt(arrOfHexValue[0], 16);
+  arrOfRgbValue[1] = parseInt(arrOfHexValue[1], 16);
+  arrOfRgbValue[2] = parseInt(arrOfHexValue[2], 16);
+  return arrOfRgbValue;
+};
+
+const replaceColor = (targetColor, paintColor, dataColor) => {
+  const data = dataColor;
+  for (let i = 0; i < dataColor.length; i += STEP_OF_RGB_COLOR) {
+    if (dataColor[i] === targetColor[0]
+      && dataColor[i + 1] === targetColor[1]
+      && dataColor[i + 2] === targetColor[2]
+      && dataColor[i + 3] === targetColor[3]) {
+    /* eslint-disable*/
+      data[i] = paintColor[0];
+      data[i + 1] = paintColor[1];
+      data[i + 2] = paintColor[2];
+      data[i + 3] = VALUE_OF_ALPHA;
+      /* eslint-enable */
     }
-    func();
   }
+  return dataColor;
 };
 
-const hexToRgb = (hex) => {
-  const arr = hex.slice(1).match(/.{2}/g);
-
-  const r = parseInt(arr[0], 16);
-  const g = parseInt(arr[1], 16);
-  const b = parseInt(arr[2], 16);
-  return `rgb(${r}, ${g}, ${b})`;
+const compareColors = (data, index, color) => {
+  if (data[index + 0] === color[0]
+    && data[index + 1] === color[1]
+    && data[index + 2] === color[2]) {
+    return true;
+  }
+  return false;
 };
 
-const matchStartColor = (data, pos, startColor) => (data[pos] === startColor.r
-    && data[pos + 1] === startColor.g
-    && data[pos + 2] === startColor.b);
-
-const colorPixel = (data, pos, color) => {
-  const arrOfRgb = color.replace(/[^\d,]/g, '').split(',');
-  const colorData = data;
-  colorData[pos] = +arrOfRgb[0];
-  colorData[pos + 1] = +arrOfRgb[1];
-  colorData[pos + 2] = +arrOfRgb[2];
+const changeColorData = (colorData, index, color) => {
+  const data = colorData;
+  /* eslint-disable*/
+  data[index] = color[0];
+  data[index + 1] = color[1];
+  data[index + 2] = color[2];
+  data[index + 3] = VALUE_OF_ALPHA;
+   /* eslint-enable */
 };
 
-const getPixelPos = (x, y, elem) => (y * elem.width + x) * 4;
+const drawImage = (url, context) => {
+  const img = new Image();
+  img.src = url;
+  img.addEventListener('load', () => {
+    context.drawImage(img, 0, 0);
+  });
+};
 
-// const sameColorPixels = (paintX, paintY, color, imgData, canvas) => {
-//   const { data } = imgData;
-//   console.log(data);
-//   let rgb = hexToRgb(color);
-//   console.log(rgb);
-//   rgb = rgb.replace(/[^\d,]/g, '').split(',');
+const removeArrayElem = (arr, index) => {
+  arr.splice(index, 1);
+  return arr;
+};
 
-//   const n = (paintY * canvas.width + paintX) * 4;
-//   const currentData = [];
-
-//   let isCurrentColor = true;
-
-//   for (let k = 0; k < 4; k += 1) {
-//     currentData.push(data[n + k]);
-
-//     if (data[n + k] !== +rgb[k]) {
-//       isCurrentColor = false;
-//     }
-//   }
-
-//   if (isCurrentColor) {
-//     return;
-//   }
-// };
-
-// const getPixel = (pixelData, x, y) => {
-//   if (x < 0 || y < 0 || x >= pixelData.width || y >= pixelData.height) {
-//     return -1;
-//   }
-//   return pixelData.data[y * pixelData.width + x];
-// };
-
+const insertArrayElem = (arr, index) => {
+  arr.splice(index, 0, arr[index - 1]);
+  return arr;
+};
 
 export {
   toggleClass,
@@ -155,10 +191,19 @@ export {
   getLocalStorageState,
   setLocalStorageState,
   changeCanvasSize,
-  colorPixel,
-  line,
-  fill,
-  hexToRgb,
-  matchStartColor,
-  getPixelPos,
+  rgbToHexColor,
+  extractRgbColor,
+  hexToRgbColorValueArray,
+  replaceColor,
+  compareColors,
+  changeColorData,
+  drawImage,
+  getLocalStorageFrameState,
+  setLocalStorageFrameState,
+  createNewElement,
+  appendChildren,
+  addTextNode,
+  removeChildNode,
+  removeArrayElem,
+  insertArrayElem,
 };

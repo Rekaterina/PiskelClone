@@ -11,6 +11,17 @@
     "test-watch": "jest --watch",
     "coverage": "jest --coverage"
   },
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/helper.js",
+      "src/app.js",
+      "src/index.js",
+      "src/**/*.js",
+      "src/**/**/*.js"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rolling-scopes-school/rekaterina-RS2019Q3.git"
@@ -22,16 +33,16 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.7",
     "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-loader": "^3.0.3",
     "eslint-plugin-import": "^2.19.1",
-    "copy-webpack-plugin": "^5.1.1",
     "html-webpack-plugin": "^3.2.0",
-    "url-loader": "^3.0.0",
-    "mini-css-extract-plugin": "^0.9.0",
     "jest": "^24.9.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "url-loader": "^3.0.0",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"

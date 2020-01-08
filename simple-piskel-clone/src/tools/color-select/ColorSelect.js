@@ -21,7 +21,6 @@ export default class ColorSelect {
   choosePrimaryColor() {
     this.primaryColor.addEventListener('input', ({ target }) => {
       this.storage.state.color.primaryColor = (target.value);
-      console.log(this.storage.state.color.primaryColor);
     });
   }
 

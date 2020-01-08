@@ -47,9 +47,10 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 512px;
-  height: 512px;
+  width: 516px;
+  height: 516px;
   margin-top: 10vh;
+  border: 2px solid rgba(0, 0, 0, 0.3);
   background: url('./img/canvas-bg.png') repeat;
 }
 

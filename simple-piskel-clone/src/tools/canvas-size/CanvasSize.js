@@ -11,12 +11,15 @@ import {
 import {
   CANVAS_SIZE_CLASSES,
   CANVAS_SIZE_NAMES,
+  CANVAS_SCALE_CLASSES,
 } from '../../constants';
 
-export default class Tools {
-  constructor(storage, canvasElem) {
+export default class CanvasSize {
+  constructor(storage, canvasElem, frames, preview) {
     this.storage = storage;
     this.canvasElem = canvasElem;
+    this.frames = frames;
+    this.preview = preview;
     this.ctx = this.canvasElem.getContext('2d');
     this.canvasSizeItems = document.querySelectorAll('.canvas-size-item');
     this.canvasSizeItem1 = document.querySelector('.canvas-size-item1');
@@ -27,14 +30,16 @@ export default class Tools {
 
   init() {
     this.addClassActive();
-    changeCanvasSize(this.canvasElem, this.canvasSizeIndex);
+    changeCanvasSize(this.canvasElem, this.storage.state.canvasSizeIndex, CANVAS_SCALE_CLASSES);
+    this.frames.setFramesSize();
+    this.preview.setPreviewSize();
     this.chooseCanvasSize();
   }
 
   addClassActive() {
     this.removeClassActive();
-    this.canvasSizeIndex = getTrueIndex(this.storage.state.canvasSize);
-    addClass('active', this.arrayCanvasSizeItem[this.canvasSizeIndex]);
+    this.storage.state.canvasSizeIndex = getTrueIndex(this.storage.state.canvasSize);
+    addClass('active', this.arrayCanvasSizeItem[this.storage.state.canvasSizeIndex]);
   }
 
   removeClassActive() {
@@ -44,21 +49,24 @@ export default class Tools {
   chooseCanvasSize() {
     const canvasSizeContainer = document.querySelector('.canvas-size-container');
     canvasSizeContainer.addEventListener('click', (e) => {
-      this.storage.setCanvasImageState();
+      this.storage.setCanvasImage();
       this.getCanvasSizeClassIndex(e);
       this.removeActiveCanvasSize();
       this.addNewActiveCanvasSize();
       this.addClassActive();
       this.removeClassScale();
-      changeCanvasSize(this.canvasElem, this.index);
-      this.storage.getCanvasImageState();
+      changeCanvasSize(this.canvasElem, this.storage.state.canvasSizeIndex, CANVAS_SCALE_CLASSES);
+      this.frames.setFramesSize();
+      this.preview.setPreviewSize();
+      this.storage.drawImageOnCanvas();
+      this.frames.drawImageOnFrames();
     });
   }
 
   getCanvasSizeClassIndex({ target }) {
     target.classList.forEach((item) => {
       if (CANVAS_SIZE_CLASSES.indexOf(item) !== -1) {
-        this.index = CANVAS_SIZE_CLASSES.indexOf(item);
+        this.storage.state.canvasSizeIndex = CANVAS_SIZE_CLASSES.indexOf(item);
       }
     });
   }
@@ -68,7 +76,7 @@ export default class Tools {
   }
 
   addNewActiveCanvasSize() {
-    setOneFlagTrue(this.storage.state.canvasSize, `${CANVAS_SIZE_NAMES[this.index]}`);
+    setOneFlagTrue(this.storage.state.canvasSize, `${CANVAS_SIZE_NAMES[this.storage.state.canvasSizeIndex]}`);
   }
 
   removeClassScale() {

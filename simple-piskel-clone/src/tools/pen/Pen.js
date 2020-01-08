@@ -3,50 +3,40 @@ import {
 } from '../../constants';
 
 export default class Pen {
-  constructor(storage, canvasElem, penSize) {
+  constructor(storage, canvasElem, penSize, frames) {
     this.storage = storage;
     this.canvasElem = canvasElem;
     this.penSize = penSize;
+    this.frames = frames;
     this.ctx = this.canvasElem.getContext('2d');
     this.drawing = false;
-    this.penMousedown = (event) => {
-      this.drawing = true;
-      this.startX = event.offsetX;
-      this.startY = event.offsetY;
-      this.mouseEvent = event;
-    };
-
-    this.penMousemove = (event) => {
-      if (this.drawing) {
-        this.draw(event);
-      }
-    };
-
-    this.penMouseup = () => {
-      this.drawing = false;
-    };
-
-    this.penMouseout = () => {
-      this.drawing = false;
-    };
-  }
-
-  init() {
-    this.penTool();
   }
 
   penTool() {
-    this.canvasElem.addEventListener('mousedown', this.penMousedown);
-    this.canvasElem.addEventListener('mousemove', this.penMousemove);
-    this.canvasElem.addEventListener('mouseup', this.penMouseup);
-    this.canvasElem.addEventListener('mouseout', this.penMouseout);
-  }
+    this.canvasElem.addEventListener('mousedown', (event) => {
+      if (this.storage.state.tool.pen || this.storage.state.tool.eraser) {
+        this.drawing = true;
+        this.startX = event.offsetX;
+        this.startY = event.offsetY;
+        this.mouseEvent = event;
+      }
+    });
 
-  removePenEventListeners() {
-    this.canvasElem.removeEventListener('mousedown', this.penMousedown);
-    this.canvasElem.removeEventListener('mousemove', this.penMousemove);
-    this.canvasElem.removeEventListener('mouseup', this.penMouseup);
-    this.canvasElem.removeEventListener('mouseout', this.penMouseout);
+    this.canvasElem.addEventListener('mousemove', (event) => {
+      if (this.storage.state.tool.pen || this.storage.state.tool.eraser) {
+        if (this.drawing) {
+          this.draw(event);
+        }
+      }
+    });
+
+    this.canvasElem.addEventListener('mouseup', () => {
+      this.storage.setCanvasImage();
+      this.frames.updateImageOnFrame();
+      if (this.storage.state.tool.pen || this.storage.state.tool.eraser) {
+        this.drawing = false;
+      }
+    });
   }
 
   draw(event) {
@@ -57,7 +47,6 @@ export default class Pen {
       this.ctx.fillStyle = this.storage.state.color.secondaryColor;
     }
 
-    // line(e, this.startX, this.startY, fill.bind(this.canvasElem, this.startX, this.startY, this.penSize));
     const currentX = event.offsetX;
     const currentY = event.offsetY;
     const deltaX = Math.abs(currentX - this.startX);
@@ -77,7 +66,8 @@ export default class Pen {
         error += deltaX;
         this.startY += dirY;
       }
-      this.ctx.fillRect(this.startX, this.startY, this.penSize.size, this.penSize.size);
+      const method = this.storage.state.tool.pen ? 'fillRect' : 'clearRect';
+      this.ctx[method](this.startX, this.startY, this.penSize.size, this.penSize.size);
     }
   }
 }

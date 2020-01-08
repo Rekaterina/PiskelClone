@@ -1,0 +1,118 @@
+.frames-section {
+  display: flex;
+  flex-direction: column;
+  width: 142px;
+  height: 89.2vh;
+  margin-top: 10px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.frames-container {
+  display: flex;
+  flex-direction: column;
+  width: 128px;
+}
+
+.frame-item-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 132px;
+  height: 132px;
+  margin-bottom: 1px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  background: url('../img/canvas-bg.png') repeat;
+  cursor: pointer;
+}
+
+.frame-item-container:hover .delete-btn,
+.frame-item-container:hover .duplicate-btn {
+  opacity: 1;
+}
+
+.frame-item {
+  image-rendering: pixelated;
+}
+
+.frame-scale1 {
+  transform: scale(4);
+}
+.frame-scale2 {
+  transform: scale(2);
+}
+.frame-scale3 {
+  transform: scale(1);
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+.add-btn {
+  height: 50px;
+  width: 132px;
+  color: rgb(240, 240, 240);
+  font-size: 16px;
+  border-radius: 7px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.add-btn:hover {
+  border: 2px solid rgb(255, 215, 0);
+}
+
+.plus {
+  margin-left: 8px;
+  font-size: 40px;
+}
+
+.frame-number,
+.delete-btn,
+.duplicate-btn {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+}
+
+.frame-number {
+  top: 0px;
+  left: 0px;
+  font-size: 20px;
+  font-weight: 600;
+  background-color: rgb(255, 215, 0, 0.8);
+}
+
+.duplicate-btn,
+.delete-btn {
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+}
+
+.fa-trash-alt,
+.fa-copy {
+  color: rgb(240, 240, 240);
+  font-size: 18px;
+}
+
+.delete-btn {
+  top: 0px;
+  right: 0px;
+}
+
+.duplicate-btn {
+  bottom: 0px;
+  right: 0px;
+}

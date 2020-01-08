@@ -2,8 +2,9 @@ import CanvasSize from './canvas-size/CanvasSize';
 import PenSize from './pen-size/PenSize';
 import ColorSelect from './color-select/ColorSelect';
 import Pen from './pen/Pen';
-import Stroke from './stroke/Stroke';
+import ColorPicker from './color-picker/ColorPicker';
 import Bucket from './bucket/Bucket';
+import PaintSamePixel from './paint-same-pixel/PaintSamePixel';
 import './tools.css';
 
 import {
@@ -20,22 +21,26 @@ import {
 } from '../constants';
 
 export default class Tools {
-  constructor(storage, canvasElem) {
+  constructor(storage, canvasElem, frames, preview) {
     this.storage = storage;
     this.canvasElem = canvasElem;
-    this.canvasSize = new CanvasSize(this.storage, this.canvasElem);
+    this.frames = frames;
+    this.preview = preview;
+    this.canvasSize = new CanvasSize(this.storage, this.canvasElem, frames, preview);
     this.penSize = new PenSize(this.storage);
     this.colorSelect = new ColorSelect(this.storage);
-    this.pen = new Pen(this.storage, this.canvasElem, this.penSize);
-    this.stroke = new Stroke(this.storage, this.canvasElem);
+    this.pen = new Pen(this.storage, this.canvasElem, this.penSize, frames);
+    this.colorPicker = new ColorPicker(this.storage, this.canvasElem);
     this.bucket = new Bucket(this.storage, this.canvasElem);
+    this.paintSamePixel = new PaintSamePixel(this.storage, this.canvasElem);
     this.toolItem = document.querySelectorAll('.tool-item');
     this.penToolElem = document.querySelector('.pen-tool');
     this.eraserToolElem = document.querySelector('.eraser-tool');
-    this.strokeToolElem = document.querySelector('.stroke-tool');
+    this.colorPickerElem = document.querySelector('.color-picker');
     this.paintBucketToolElem = document.querySelector('.paint-bucket-tool');
-    this.arrayToolElem = [this.penToolElem,
-      this.eraserToolElem, this.paintBucketToolElem, this.strokeToolElem];
+    this.paintSamePixelToolElem = document.querySelector('.paint-same-pixel-tool');
+    this.arrayToolElem = [this.penToolElem, this.eraserToolElem, this.paintBucketToolElem,
+      this.paintSamePixelToolElem, this.colorPickerElem];
   }
 
   init() {
@@ -44,8 +49,11 @@ export default class Tools {
     this.penSize.init();
     this.colorSelect.init();
     this.addClassActive();
-    this.initTool();
     this.chooseTool();
+    this.pen.penTool();
+    this.colorPicker.colorPickerTool();
+    this.bucket.bucketTool();
+    this.paintSamePixel.paintSamePixelTool();
   }
 
   noContextmenu() {
@@ -71,8 +79,6 @@ export default class Tools {
       this.removeActiveTool();
       this.addNewActiveTool();
       this.addClassActive();
-      this.removeCanvasEventListeners();
-      this.initTool();
     });
   }
 
@@ -96,18 +102,5 @@ export default class Tools {
 
   addNewActiveTool() {
     setOneFlagTrue(this.storage.state.tool, `${TOOL_NAMES[this.toolClassIndex]}`);
-  }
-
-  initTool() {
-    if (this.storage.state.tool.pen) {
-      this.pen.init();
-    }
-    if (this.storage.state.tool.bucket) {
-      this.bucket.init();
-    }
-  }
-
-  removeCanvasEventListeners() {
-    this.pen.removePenEventListeners();
   }
 }
