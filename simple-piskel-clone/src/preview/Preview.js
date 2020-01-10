@@ -22,7 +22,9 @@ export default class Preview {
     this.inputRange = document.querySelector('.input-range');
     this.rateValue = document.querySelector('.rate-value');
     this.animation = this.animation.bind(this);
+    this.stopAnim = this.animateFrames.bind(this);
     this.isAnimation = true;
+    this.timeOutId = null;
   }
 
   init() {
@@ -64,6 +66,9 @@ export default class Preview {
   }
 
   animation() {
+    if (!this.frameIndex) {
+      this.frameIndex = 0;
+    }
     if (!this.isAnimation) return;
     this.animationInterval = 1000 / this.storage.state.FPS;
     this.clearPreview();
@@ -79,9 +84,9 @@ export default class Preview {
       this.frameIndex = 0;
     }
 
-    setTimeout(this.animation, this.animationInterval);
+    this.timeOutId = setTimeout(this.animation, this.animationInterval);
   }
-
+  
   clearPreview() {
     this.ctx.clearRect(0, 0, this.previewElem.width, this.previewElem.height);
   }
@@ -89,5 +94,9 @@ export default class Preview {
   setPreviewSize() {
     removeClasses(this.previewElem, 'preview-scale1', 'preview-scale2', 'preview-scale3');
     changeCanvasSize(this.previewElem, this.storage.state.canvasSizeIndex, PREVIEW_SCALE_CLASSES);
+  }
+
+  stopAnim() {
+    clearTimeout(this.timeOutId);
   }
 }

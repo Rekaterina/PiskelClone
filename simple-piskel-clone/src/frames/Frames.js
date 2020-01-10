@@ -25,6 +25,10 @@ export default class Frames {
     this.preview = preview;
     this.framesContainer = document.querySelector('.frames-container');
     this.ctx = this.canvasElem.getContext('2d');
+    this.startBtn = document.getElementById('start');
+    this.stopBtn = document.getElementById('stop');
+    this.timeOutId = null;
+    this.startFrameAnimation = this.startFrameAnimation.bind(this);
   }
 
   init() {
@@ -32,9 +36,11 @@ export default class Frames {
     this.addFramesPagination();
     this.addClassActiveToFirstFrame();
     this.drawImageOnFrames();
-    this.preview.animateFrames();
+    //this.preview.animateFrames();
     this.addButtonListener();
     this.addFramesListener();
+    this.startBtn.addEventListener('click', this.preview.anim);
+    this.stopBtn.addEventListener('click', this.preview.stopAnim);
   }
 
   drawFrame() {
@@ -89,7 +95,7 @@ export default class Frames {
     this.storage.clearCanvas();
     this.storage.setCanvasImage();
     this.updateImageOnFrame();
-    this.startFrameAnimation();
+    //this.startFrameAnimation();
   }
 
   setFramesSize() {
@@ -271,10 +277,14 @@ export default class Frames {
     }
   }
 
+  // startFrameAnimation() {
+  //   const frameItem = document.querySelectorAll('.frame-item');
+  //   if (frameItem.length === 2) {
+  //     this.preview.animateFrames();
+  //   }
+  // }
+
   startFrameAnimation() {
-    const frameItem = document.querySelectorAll('.frame-item');
-    if (frameItem.length === 2) {
-      this.preview.animateFrames();
-    }
+    this.preview.animation();
   }
 }
