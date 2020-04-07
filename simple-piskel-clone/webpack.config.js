@@ -50,6 +50,10 @@ module.exports = {
       toType: 'dir',
       ignore: ['*.ico'],
     },
+    {
+      from: 'src/gif.worker.js',
+      to: 'gif',
+    },
     ], {
       copyUnmodified: true,
     }),

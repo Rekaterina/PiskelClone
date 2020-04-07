@@ -25,10 +25,6 @@ export default class Frames {
     this.preview = preview;
     this.framesContainer = document.querySelector('.frames-container');
     this.ctx = this.canvasElem.getContext('2d');
-    this.startBtn = document.getElementById('start');
-    this.stopBtn = document.getElementById('stop');
-    this.timeOutId = null;
-    this.startFrameAnimation = this.startFrameAnimation.bind(this);
   }
 
   init() {
@@ -36,11 +32,9 @@ export default class Frames {
     this.addFramesPagination();
     this.addClassActiveToFirstFrame();
     this.drawImageOnFrames();
-    //this.preview.animateFrames();
+    this.preview.animateFrames();
     this.addButtonListener();
     this.addFramesListener();
-    this.startBtn.addEventListener('click', this.preview.anim);
-    this.stopBtn.addEventListener('click', this.preview.stopAnim);
   }
 
   drawFrame() {
@@ -60,7 +54,9 @@ export default class Frames {
     const frameItem = createNewElement('canvas', 'frame-item');
     const frameNumber = createNewElement('button', 'frame-number');
     const deleteButton = createNewElement('button', 'delete-btn');
+    deleteButton.setAttribute('title', 'Delete this frame (D)');
     const duplicateButton = createNewElement('button', 'duplicate-btn');
+    duplicateButton.setAttribute('title', 'Duplicate this frame (C)');
     const deleteIcon = createNewElement('i', 'fas', 'fa-trash-alt');
     const duplicateIcon = createNewElement('i', 'fas', 'fa-copy');
 
@@ -84,18 +80,22 @@ export default class Frames {
 
   addButtonListener() {
     const addFrameButton = document.querySelector('.add-btn');
-    addFrameButton.addEventListener('click', () => this.addNewFrame());
+    addFrameButton.addEventListener('click', this.addNewFrame.bind(this));
   }
 
   addNewFrame() {
-    this.createFrame();
-    this.setFramesSize();
-    this.setFramesPagination();
+    this.renderFrame();
     this.addClassActiveToLastFrame();
     this.storage.clearCanvas();
     this.storage.setCanvasImage();
     this.updateImageOnFrame();
-    //this.startFrameAnimation();
+    this.startFrameAnimation();
+  }
+
+  renderFrame() {
+    this.createFrame();
+    this.setFramesSize();
+    this.setFramesPagination();
   }
 
   setFramesSize() {
@@ -144,10 +144,10 @@ export default class Frames {
     addClass('active', target.parentNode);
   }
 
-  addClassActiveToDuplicateFrame() {
+  addClassActiveToDuplicateFrame(frameIndex) {
     this.frameItemContainers = document.querySelectorAll('.frame-item-container');
     this.removeClassActive();
-    addClass('active', this.frameItemContainers[this.targetFrameNumber]);
+    addClass('active', this.frameItemContainers[frameIndex + 1]);
   }
 
   removeClassActive() {
@@ -174,62 +174,82 @@ export default class Frames {
   }
 
   deleteTargetFrame(target) {
-    this.getTargetFrameNumber(target);
-    this.removeFrameDataFromState();
+    this.getTargetFrameIndex(target);
+    this.removeFrameDataFromState(this.targetFrameIndex);
     this.frameItemContainers = document.querySelectorAll('.frame-item-container');
-    this.targetFrame = this.frameItemContainers[this.targetFrameNumber - 1];
-
+    this.targetFrame = this.frameItemContainers[this.targetFrameIndex];
     if (this.targetFrame.classList.contains('active')) {
       this.targetFrame.remove();
-      this.changeActiveFrame();
+      this.changeActiveFrame(this.targetFrameIndex);
     } else {
       this.targetFrame.remove();
     }
+    this.toggleDeleteButton();
+    this.setFramesPagination();
+  }
 
+  deleteActiveFrame() {
+    if (this.storage.state.frameItems.length === 1) {
+      return;
+    }
+    this.getActiveFrameIndex();
+    this.removeFrameDataFromState(this.storage.state.activeFrameIndex);
+    this.frameItemContainers = document.querySelectorAll('.frame-item-container');
+    this.activeFrame = this.frameItemContainers[this.storage.state.activeFrameIndex];
+    this.activeFrame.remove();
+    this.changeActiveFrame(this.storage.state.activeFrameIndex);
     this.toggleDeleteButton();
     this.setFramesPagination();
   }
 
   duplicateTargetFrame(target) {
-    this.getTargetFrameNumber(target);
-    this.updateFrameDataInState();
-    this.createFrame();
-    this.setFramesSize();
-    this.setFramesPagination();
-    this.addClassActiveToDuplicateFrame();
+    this.getTargetFrameIndex(target);
+    this.updateFrameDataInState(this.targetFrameIndex);
+    this.renderFrame();
+    this.addClassActiveToDuplicateFrame(this.targetFrameIndex);
     this.drawImageOnFrames();
     this.updateImageOnCanvasFromActiveFrame();
     this.startFrameAnimation();
   }
 
-  getTargetFrameNumber(target) {
+  duplicateActiveFrame() {
+    this.getActiveFrameIndex();
+    this.updateFrameDataInState(this.storage.state.activeFrameIndex);
+    this.renderFrame();
+    this.addClassActiveToDuplicateFrame(this.storage.state.activeFrameIndex);
+    this.drawImageOnFrames();
+    this.updateImageOnCanvasFromActiveFrame();
+    this.startFrameAnimation();
+  }
+
+  getTargetFrameIndex(target) {
     if (target.classList.contains('delete-btn')) {
-      this.targetFrameNumber = target.previousElementSibling.innerHTML;
+      this.targetFrameIndex = target.previousElementSibling.innerHTML - 1;
     }
     if (target.classList.contains('fa-trash-alt')) {
-      this.targetFrameNumber = target.parentNode.previousElementSibling.innerHTML;
+      this.targetFrameIndex = target.parentNode.previousElementSibling.innerHTML - 1;
     }
 
     if (target.classList.contains('duplicate-btn')) {
-      this.targetFrameNumber = target.previousElementSibling.previousElementSibling.innerHTML;
+      this.targetFrameIndex = target.previousElementSibling.previousElementSibling.innerHTML - 1;
     }
     if (target.classList.contains('fa-copy')) {
-      const number = target.parentNode.previousElementSibling.previousElementSibling.innerHTML;
-      this.targetFrameNumber = number;
+      const index = target.parentNode.previousElementSibling.previousElementSibling.innerHTML - 1;
+      this.targetFrameIndex = index;
     }
   }
 
-  updateFrameDataInState() {
-    insertArrayElem(this.storage.state.frameItems, this.targetFrameNumber);
+  updateFrameDataInState(frameIndex) {
+    insertArrayElem(this.storage.state.frameItems, frameIndex);
   }
 
-  removeFrameDataFromState() {
-    removeArrayElem(this.storage.state.frameItems, this.targetFrameNumber - 1);
+  removeFrameDataFromState(frameIndex) {
+    removeArrayElem(this.storage.state.frameItems, frameIndex);
   }
 
-  changeActiveFrame() {
+  changeActiveFrame(frameIndex) {
     const frameItemContainers = document.querySelectorAll('.frame-item-container');
-    const newActiveFrameIndex = this.targetFrameNumber - 2;
+    const newActiveFrameIndex = frameIndex - 1;
     if (newActiveFrameIndex > 0) {
       addClass('active', frameItemContainers[newActiveFrameIndex]);
     } else {
@@ -277,14 +297,17 @@ export default class Frames {
     }
   }
 
-  // startFrameAnimation() {
-  //   const frameItem = document.querySelectorAll('.frame-item');
-  //   if (frameItem.length === 2) {
-  //     this.preview.animateFrames();
-  //   }
-  // }
-
   startFrameAnimation() {
-    this.preview.animation();
+    const frameItem = document.querySelectorAll('.frame-item');
+    if (frameItem.length === 2) {
+      this.preview.animateFrames();
+    }
+  }
+
+  setFramesImages() {
+    const frameItems = document.querySelectorAll('.frame-item');
+    frameItems.forEach((item, index) => {
+      this.storage.state.frameItems[index] = item.toDataURL();
+    });
   }
 }

@@ -61,6 +61,7 @@
 }
 
 .add-btn {
+  position: relative;
   height: 50px;
   width: 132px;
   color: rgb(240, 240, 240);
@@ -68,6 +69,11 @@
   border-radius: 7px;
   border: 2px solid rgba(0, 0, 0, 0.3);
   background-color: rgba(0, 0, 0, 0.6);
+}
+
+.add-btn:hover::after {
+  top: 120%;
+  white-space: nowrap;
 }
 
 .add-btn:hover {

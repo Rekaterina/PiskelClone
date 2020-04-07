@@ -11,17 +11,6 @@
     "test-watch": "jest --watch",
     "coverage": "jest --coverage"
   },
-  "jest": {
-    "verbose": true,
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/helper.js",
-      "src/app.js",
-      "src/index.js",
-      "src/**/*.js",
-      "src/**/**/*.js"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rolling-scopes-school/rekaterina-RS2019Q3.git"
@@ -46,5 +35,8 @@
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
+  },
+  "dependencies": {
+    "gif.js.optimized": "^1.0.1"
   }
 }

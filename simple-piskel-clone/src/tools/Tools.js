@@ -64,8 +64,8 @@ export default class Tools {
 
   addClassActive() {
     this.removeClassActive();
-    const toolIndex = getTrueIndex(this.storage.state.tool);
-    addClass('active', this.arrayToolElem[toolIndex]);
+    this.storage.state.toolClassIndex = getTrueIndex(this.storage.state.tool);
+    addClass('active', this.arrayToolElem[this.storage.state.toolClassIndex]);
   }
 
   removeClassActive() {
@@ -76,24 +76,28 @@ export default class Tools {
     const toolsContainer = document.querySelector('.tools-container');
     toolsContainer.addEventListener('click', (e) => {
       this.getToolClassIndex(e);
-      this.removeActiveTool();
-      this.addNewActiveTool();
-      this.addClassActive();
+      this.changeActiveTool();
     });
   }
 
   getToolClassIndex({ target }) {
     target.classList.forEach((item) => {
       if (TOOL_CLASSES.indexOf(item) !== -1) {
-        this.toolClassIndex = TOOL_CLASSES.indexOf(item);
+        this.storage.state.toolClassIndex = TOOL_CLASSES.indexOf(item);
       } else {
         target.parentNode.classList.forEach((item2) => {
           if (TOOL_CLASSES.indexOf(item2) !== -1) {
-            this.toolClassIndex = TOOL_CLASSES.indexOf(item2);
+            this.storage.state.toolClassIndex = TOOL_CLASSES.indexOf(item2);
           }
         });
       }
     });
+  }
+
+  changeActiveTool() {
+    this.removeActiveTool();
+    this.addNewActiveTool();
+    this.addClassActive();
   }
 
   removeActiveTool() {
@@ -101,6 +105,6 @@ export default class Tools {
   }
 
   addNewActiveTool() {
-    setOneFlagTrue(this.storage.state.tool, `${TOOL_NAMES[this.toolClassIndex]}`);
+    setOneFlagTrue(this.storage.state.tool, `${TOOL_NAMES[this.storage.state.toolClassIndex]}`);
   }
 }

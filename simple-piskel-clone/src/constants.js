@@ -12,7 +12,6 @@ const CANVAS_SIZE = { size1: 32, size2: 64, size3: 128 };
 const PEN_SIZE_CLASSES = ['pen-size-item1', 'pen-size-item2', 'pen-size-item3', 'pen-size-item4'];
 const PEN_SIZE_NAMES = ['penSizeOne', 'penSizeTwo', 'penSizeThree', 'penSizeFour'];
 
-const FRAME_NAMES = ['frame1', 'frame2', 'frame3', 'frame4', 'frame5', 'frame6', 'frame7', 'frame8', 'frame9', 'frame10'];
 const FRAME_SCALE_CLASSES = ['frame-scale1', 'frame-scale2', 'frame-scale3'];
 
 const PREVIEW_SCALE_CLASSES = ['preview-scale1', 'preview-scale2', 'preview-scale3'];
@@ -22,6 +21,72 @@ const MOUSE_BUTTON_EVENT = { left: 0, right: 2 };
 const VALUE_OF_ALPHA = 255;
 
 const STEP_OF_RGB_COLOR = 4;
+
+const KEYS = {
+  keyF: {
+    code: 70,
+  },
+  keyA: {
+    code: 65,
+  },
+  keyX: {
+    code: 88,
+  },
+  keyD: {
+    code: 68,
+  },
+  keyC: {
+    code: 67,
+  },
+  keyP: {
+    code: 80,
+    toolIndex: 0,
+  },
+  keyE: {
+    code: 69,
+    toolIndex: 1,
+  },
+  keyB: {
+    code: 66,
+    toolIndex: 2,
+  },
+  keyS: {
+    code: 83,
+    toolIndex: 3,
+  },
+  keyO: {
+    code: 79,
+    toolIndex: 4,
+  },
+  key1: {
+    code: 49,
+    penSizeIndex: 0,
+  },
+  key2: {
+    code: 50,
+    penSizeIndex: 1,
+  },
+  key3: {
+    code: 51,
+    penSizeIndex: 2,
+  },
+  key4: {
+    code: 52,
+    penSizeIndex: 3,
+  },
+  keyK: {
+    code: 75,
+    canvasSizeIndex: 0,
+  },
+  keyL: {
+    code: 76,
+    canvasSizeIndex: 1,
+  },
+  keyM: {
+    code: 77,
+    canvasSizeIndex: 2,
+  },
+};
 
 export {
   COLOR,
@@ -36,7 +101,7 @@ export {
   PEN_SIZE_NAMES,
   VALUE_OF_ALPHA,
   STEP_OF_RGB_COLOR,
-  FRAME_NAMES,
   FRAME_SCALE_CLASSES,
   PREVIEW_SCALE_CLASSES,
+  KEYS,
 };

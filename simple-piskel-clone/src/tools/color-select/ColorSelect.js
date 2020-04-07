@@ -3,14 +3,14 @@ export default class ColorSelect {
     this.storage = storage;
     this.primaryColor = document.querySelector('.primary-color');
     this.secondaryColor = document.querySelector('.secondary-color');
-    this.colorSwapElem = document.querySelector('.color-swap');
+    this.colorSwapButton = document.querySelector('.color-swap');
   }
 
   init() {
     this.setColorValue();
     this.choosePrimaryColor();
     this.chooseSecondaryColor();
-    this.colorSwap();
+    this.colorSwapButtonListener();
   }
 
   setColorValue() {
@@ -30,12 +30,14 @@ export default class ColorSelect {
     });
   }
 
+  colorSwapButtonListener() {
+    this.colorSwapButton.addEventListener('click', this.colorSwap.bind(this));
+  }
+
   colorSwap() {
-    this.colorSwapElem.addEventListener('click', () => {
-      const tempColor = this.storage.state.color.primaryColor;
-      this.storage.state.color.primaryColor = this.storage.state.color.secondaryColor;
-      this.storage.state.color.secondaryColor = tempColor;
-      this.setColorValue();
-    });
+    const tempColor = this.storage.state.color.primaryColor;
+    this.storage.state.color.primaryColor = this.storage.state.color.secondaryColor;
+    this.storage.state.color.secondaryColor = tempColor;
+    this.setColorValue();
   }
 }

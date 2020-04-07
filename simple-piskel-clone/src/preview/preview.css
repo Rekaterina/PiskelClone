@@ -79,3 +79,14 @@
 .preview-scale3 {
   transform: scale(2);
 }
+
+.gif-btn {
+  width: 100px;
+  height: 40px;
+  margin: 0.5px;
+  color: rgb(240, 240, 240);
+  font-size: 15px;
+  border-radius: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
+}

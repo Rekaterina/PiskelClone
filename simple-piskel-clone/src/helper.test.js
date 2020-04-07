@@ -38,8 +38,8 @@ describe('helper.hexToRgbColorValueArray', () => {
 
 describe('helper.insertArrayElem', () => {
   test('insert an array element into the same array', () => {
-    expect(insertArrayElem([1, 2, 3], 3)).toStrictEqual([1, 2, 3, 3]);
-    expect(insertArrayElem([1, 20, 3, 7], 1)).toStrictEqual([1, 1, 20, 3, 7]);
+    expect(insertArrayElem([1, 2, 3], 2)).toStrictEqual([1, 2, 3, 3]);
+    expect(insertArrayElem([1, 20, 3, 7], 0)).toStrictEqual([1, 1, 20, 3, 7]);
   });
 });
 

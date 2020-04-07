@@ -79,22 +79,6 @@ const setLocalStorageState = (arr, object) => {
   });
 };
 
-const getLocalStorageFrameState = (storageArray, stateArray) => {
-  const arr = stateArray;
-  storageArray.map((item, index) => {
-    if (localStorage.getItem(`${item}`) !== 'undefined') {
-      arr[index] = localStorage.getItem(`${item}`);
-    }
-    return stateArray;
-  });
-};
-
-const setLocalStorageFrameState = (storageArray, stateArray) => {
-  storageArray.forEach((item, index) => {
-    localStorage.setItem(`${item}`, stateArray[index]);
-  });
-};
-
 const changeCanvasSize = (element, index, classes) => {
   const elem = element;
   elem.width = CANVAS_SIZE[Object.keys(CANVAS_SIZE)[index]];
@@ -176,7 +160,7 @@ const removeArrayElem = (arr, index) => {
 };
 
 const insertArrayElem = (arr, index) => {
-  arr.splice(index, 0, arr[index - 1]);
+  arr.splice(index + 1, 0, arr[index]);
   return arr;
 };
 
@@ -198,8 +182,6 @@ export {
   compareColors,
   changeColorData,
   drawImage,
-  getLocalStorageFrameState,
-  setLocalStorageFrameState,
   createNewElement,
   appendChildren,
   addTextNode,

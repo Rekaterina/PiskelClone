@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id" content="673849991093-nb0o85gae5b2psjbibt5id66ob73297a.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script src="https://kit.fontawesome.com/30b69abfe7.js" crossorigin="anonymous"></script>
   <title>Piskel Clone</title>
 </head>
@@ -11,7 +13,16 @@
   <div class="wrapper">
     <header class="header">
       <h1 class="app-title">Piskel Clone</h1>
-      <button class="back-btn gold-button hidden" data-title="Back to Landing Page"><i class="fas fa-arrow-left"></i></button>
+      <div class="auth-container">
+        <button class="back-btn gold-button hidden" data-title="Back to Landing Page"><i class="fas fa-arrow-left"></i></button>
+        <div class="auth">
+          <div class="user-data hidden">
+            <div class="user-image"></div>
+            <span class="user-email"></span>
+          </div>
+          <div class="g-signin2" data-width="100" data-height="35" data-onsuccess="onSignIn"></div>
+        </div>
+      </div>
     </header>
     <main class="main">
       <section class="landing-page">
@@ -29,6 +40,9 @@
                   <li class="functionality-list-item"><span>Сanvas scaling: </span>32x32 / 64x64 / 128x128 units</li>
                   <li class="functionality-list-item"><span>Frames: </span>ability to add, delete, duplicate.</li>
                   <li class="functionality-list-item"><span>Preview: </span>ability to animate the created frames, full screen mode.</li>
+                  <li class="functionality-list-item"><span>Keyboard shortcuts</span></li>
+                  <li class="functionality-list-item"><span>Log in: </span>via google account</li>
+                  <li class="functionality-list-item"><span>Export: </span>as animated gif</li>
                 </ul>
             </div>
           </section>
@@ -55,33 +69,33 @@
       <section class="app-page hidden">
         <section class="tools-section">
           <div class="pen-size-container">
-            <div class="pen-size-item pen-size-item1 title" data-title="Pen size 1px"><div class="pen-size1"></div></div>
-            <div class="pen-size-item pen-size-item2 title" data-title="Pen size 2px"><div class="pen-size2"></div></div>
-            <div class="pen-size-item pen-size-item3 title" data-title="Pen size 3px"><div class="pen-size3"></div></div>
-            <div class="pen-size-item pen-size-item4 title" data-title="Pen size 4px"><div class="pen-size4"></div></div>
+            <div class="pen-size-item pen-size-item1 title" data-title="Pen size 1px (1)"><div class="pen-size1"></div></div>
+            <div class="pen-size-item pen-size-item2 title" data-title="Pen size 2px (2)"><div class="pen-size2"></div></div>
+            <div class="pen-size-item pen-size-item3 title" data-title="Pen size 3px (3)"><div class="pen-size3"></div></div>
+            <div class="pen-size-item pen-size-item4 title" data-title="Pen size 4px (4)"><div class="pen-size4"></div></div>
           </div>
           <div class="tools-container">
-            <button class="tool-item pen-tool title" data-title="Pen tool"><i class="fas fa-pencil-alt"></i></button>
-            <button class="tool-item eraser-tool title" data-title="Eraser tool"><i class="fas fa-eraser"></i></button>
-            <button class="tool-item paint-bucket-tool title" data-title="Paint bucket tool"><i class="fas fa-fill-drip"></i></button>
-            <button class="tool-item paint-same-pixel-tool title" data-title="Paint all pixels of the same color"><i class="fas fa-paint-brush"></i></button>
-            <button class="tool-item color-picker title" data-title="Color picker"><i class="fas fa-eye-dropper"></i></button>
+            <button class="tool-item pen-tool title" data-title="Pen tool (P)"><i class="fas fa-pencil-alt"></i></button>
+            <button class="tool-item eraser-tool title" data-title="Eraser tool (E)"><i class="fas fa-eraser"></i></button>
+            <button class="tool-item paint-bucket-tool title" data-title="Paint bucket tool (B)"><i class="fas fa-fill-drip"></i></button>
+            <button class="tool-item paint-same-pixel-tool title" data-title="Paint all pixels of the same color (S)"><i class="fas fa-paint-brush"></i></button>
+            <button class="tool-item color-picker title" data-title="Color picker (O)"><i class="fas fa-eye-dropper"></i></button>
           </div>
           <div class="color-select-container">
             <input type="color" class="color-item primary-color title" value="#ffd700" data-title="Primary - left mouse button">
             <input type="color" class="color-item secondary-color title" data-title="Secondary - left mouse button">
-            <button class="color-swap title" data-title="Swap colors"><i class="fas fa-sync"></i></button>
+            <button class="color-swap title" data-title="Swap colors (X)"><i class="fas fa-sync"></i></button>
           </div>
           <div class="canvas-size-container">
-            <button class="canvas-size-item canvas-size-item1 title" data-title="Canvas size">32x32</button>
-            <button class="canvas-size-item canvas-size-item2 title" data-title="Canvas size">64x64</button>
-            <button class="canvas-size-item canvas-size-item3 title" data-title="Canvas size">128x128</button>
+            <button class="canvas-size-item canvas-size-item1 title" data-title="Canvas size (K)">32x32</button>
+            <button class="canvas-size-item canvas-size-item2 title" data-title="Canvas size (L)">64x64</button>
+            <button class="canvas-size-item canvas-size-item3 title" data-title="Canvas size (M)">128x128</button>
           </div>
         </section>
         <section class="frames-section">
           <div class="frames-container">
           </div>
-          <button class="add-btn"><span class="plus">+</span>Add new frame</button>
+          <button class="add-btn title" data-title="Add new frame (A)"><span class="plus">+</span>Add new frame</button>
         </section>
         <section class="canvas-container">
           <canvas class="canvas"></canvas>
@@ -95,11 +109,11 @@
               <p class="animation-rate"><span class="rate-value"></span>FPS</p>
               <input class="input-range" type="range" min="1" max="24">
             </div>
-            <button class="full-screen-btn title" data-title="Full screen"><i class="fas fa-external-link-alt"></i></button>
+            <button class="full-screen-btn title" data-title="Full screen (F)"><i class="fas fa-external-link-alt"></i></button>
           </div>
-          <button id="start">play</button>
-          <div>////////////////////////</div>
-          <button id="stop">stop</button>
+          <div class="export">
+            <button class="gif-btn">Export as gif</button>
+          </div>
         </section>
       </section>
     </main>

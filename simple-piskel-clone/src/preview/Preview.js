@@ -1,3 +1,4 @@
+import GIF from '../../node_modules/gif.js.optimized/dist/gif';
 import './preview.css';
 
 import {
@@ -21,20 +22,19 @@ export default class Preview {
     this.fullScreenButton = document.querySelector('.full-screen-btn');
     this.inputRange = document.querySelector('.input-range');
     this.rateValue = document.querySelector('.rate-value');
+    this.gifButton = document.querySelector('.gif-btn');
     this.animation = this.animation.bind(this);
-    this.stopAnim = this.animateFrames.bind(this);
-    this.isAnimation = true;
-    this.timeOutId = null;
   }
 
   init() {
     this.fullScreenButtonListener();
     this.inputRangeListener();
     this.setAnimationRate();
+    this.exportListener();
   }
 
   fullScreenButtonListener() {
-    this.fullScreenButton.addEventListener('click', () => this.toggleFullScreenMode());
+    this.fullScreenButton.addEventListener('click', this.toggleFullScreenMode.bind(this));
   }
 
   toggleFullScreenMode() {
@@ -51,7 +51,7 @@ export default class Preview {
   }
 
   inputRangeListener() {
-    this.inputRange.addEventListener('change', () => this.changeAnimationRange());
+    this.inputRange.addEventListener('change', this.changeAnimationRange.bind(this));
   }
 
   changeAnimationRange() {
@@ -66,14 +66,10 @@ export default class Preview {
   }
 
   animation() {
-    if (!this.frameIndex) {
-      this.frameIndex = 0;
-    }
-    if (!this.isAnimation) return;
     this.animationInterval = 1000 / this.storage.state.FPS;
     this.clearPreview();
     if (!this.storage.state.frameItems[this.frameIndex]) {
-      return;
+      this.frameIndex = 0;
     }
     drawImage(this.storage.state.frameItems[this.frameIndex], this.ctx);
     if (this.storage.state.frameItems.length === 1) {
@@ -84,9 +80,9 @@ export default class Preview {
       this.frameIndex = 0;
     }
 
-    this.timeOutId = setTimeout(this.animation, this.animationInterval);
+    setTimeout(this.animation, this.animationInterval);
   }
-  
+
   clearPreview() {
     this.ctx.clearRect(0, 0, this.previewElem.width, this.previewElem.height);
   }
@@ -96,7 +92,37 @@ export default class Preview {
     changeCanvasSize(this.previewElem, this.storage.state.canvasSizeIndex, PREVIEW_SCALE_CLASSES);
   }
 
-  stopAnim() {
-    clearTimeout(this.timeOutId);
+  exportListener() {
+    this.gifButton.addEventListener('click', this.exportAsGif.bind(this));
+  }
+
+  exportAsGif() {
+    const gif = new GIF({
+      quality: 1,
+      workerScript: './gif/gif.worker.js',
+      width: this.previewElem.width,
+      height: this.previewElem.height,
+    });
+
+    this.storage.state.frameItems.forEach((item) => {
+      const gifCanvas = document.createElement('canvas');
+      const ctx = gifCanvas.getContext('2d');
+      gifCanvas.width = this.previewElem.width;
+      gifCanvas.height = this.previewElem.height;
+      if (!item) return;
+      drawImage(item, ctx);
+      gif.addFrame(gifCanvas, { delay: this.animationInterval });
+    });
+
+    gif.on('finished', this.downloadGif.bind(this));
+    gif.render();
+  }
+
+  downloadGif(blob) {
+    this.url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = 'image.gif';
+    link.href = this.url;
+    link.click();
   }
 }

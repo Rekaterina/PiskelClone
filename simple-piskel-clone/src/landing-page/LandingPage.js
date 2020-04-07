@@ -1,4 +1,4 @@
-import './landing-page.css';
+import './landingPage.css';
 import {
   toggleClass,
 } from '../helper';
@@ -28,8 +28,8 @@ export default class LandingPage {
   }
 
   eventListener() {
-    this.startButton.addEventListener('click', () => this.openAppPage());
-    this.backButton.addEventListener('click', () => this.openLandingPage());
+    this.startButton.addEventListener('click', this.openAppPage.bind(this));
+    this.backButton.addEventListener('click', this.openLandingPage.bind(this));
   }
 
   openAppPage() {

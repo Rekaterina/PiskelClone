@@ -3,15 +3,12 @@ import {
   TOOL_NAMES,
   CANVAS_SIZE_NAMES,
   PEN_SIZE_NAMES,
-  FRAME_NAMES,
 } from '../constants';
 
 import {
   getLocalStorageState,
   setLocalStorageState,
   drawImage,
-  getLocalStorageFrameState,
-  setLocalStorageFrameState,
 } from '../helper';
 
 export default class Storage {
@@ -62,7 +59,7 @@ export default class Storage {
     getLocalStorageState(CANVAS_SIZE_NAMES, this.state.canvasSize);
     getLocalStorageState(PEN_SIZE_NAMES, this.state.penSize);
     this.state.canvasImage = localStorage.getItem('canvasImage');
-    getLocalStorageFrameState(FRAME_NAMES, this.state.frameItems);
+    this.state.frameItems = JSON.parse(localStorage.getItem('frameItems'));
   }
 
   drawImageOnCanvas() {
@@ -78,7 +75,7 @@ export default class Storage {
     setLocalStorageState(CANVAS_SIZE_NAMES, this.state.canvasSize);
     setLocalStorageState(PEN_SIZE_NAMES, this.state.penSize);
     localStorage.setItem('canvasImage', this.state.canvasImage);
-    setLocalStorageFrameState(FRAME_NAMES, this.state.frameItems);
+    localStorage.setItem('frameItems', JSON.stringify(this.state.frameItems));
   }
 
   setCanvasImage() {

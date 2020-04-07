@@ -36,12 +36,12 @@ export default class PenSize {
 
   addClassActive() {
     this.removeClassActive();
-    this.penSizeIndex = getTrueIndex(this.storage.state.penSize);
-    addClass('active', this.arrayPenSizeItem[this.penSizeIndex]);
+    this.storage.state.penSizeIndex = getTrueIndex(this.storage.state.penSize);
+    addClass('active', this.arrayPenSizeItem[this.storage.state.penSizeIndex]);
   }
 
   setPenSize() {
-    this.size = this.penSizeIndex + 1;
+    this.size = this.storage.state.penSizeIndex + 1;
   }
 
   removeClassActive() {
@@ -52,25 +52,29 @@ export default class PenSize {
     const penSizeContainer = document.querySelector('.pen-size-container');
     penSizeContainer.addEventListener('click', (e) => {
       this.getPenSizeClassIndex(e);
-      this.removeActivePenSize();
-      this.addNewActivePenSize();
-      this.addClassActive();
-      this.setPenSize();
+      this.changeActivePenSize();
     });
   }
 
   getPenSizeClassIndex({ target }) {
     target.classList.forEach((item) => {
       if (PEN_SIZE_CLASSES.indexOf(item) !== -1) {
-        this.index = PEN_SIZE_CLASSES.indexOf(item);
+        this.storage.state.penSizeIndex = PEN_SIZE_CLASSES.indexOf(item);
       } else {
         target.parentNode.classList.forEach((item2) => {
           if (PEN_SIZE_CLASSES.indexOf(item2) !== -1) {
-            this.index = PEN_SIZE_CLASSES.indexOf(item2);
+            this.storage.state.penSizeIndex = PEN_SIZE_CLASSES.indexOf(item2);
           }
         });
       }
     });
+  }
+
+  changeActivePenSize() {
+    this.removeActivePenSize();
+    this.addNewActivePenSize();
+    this.addClassActive();
+    this.setPenSize();
   }
 
   removeActivePenSize() {
@@ -78,6 +82,6 @@ export default class PenSize {
   }
 
   addNewActivePenSize() {
-    setOneFlagTrue(this.storage.state.penSize, `${PEN_SIZE_NAMES[this.index]}`);
+    setOneFlagTrue(this.storage.state.penSize, `${PEN_SIZE_NAMES[this.storage.state.penSizeIndex]}`);
   }
 }

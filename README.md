@@ -1,2 +1,2 @@
-# Piskel-Clone-app
-Piskel Clone app
+# rekaterina-RS2019Q3
+Private repository for @rekaterina

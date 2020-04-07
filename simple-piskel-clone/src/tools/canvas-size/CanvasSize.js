@@ -49,17 +49,8 @@ export default class CanvasSize {
   chooseCanvasSize() {
     const canvasSizeContainer = document.querySelector('.canvas-size-container');
     canvasSizeContainer.addEventListener('click', (e) => {
-      this.storage.setCanvasImage();
       this.getCanvasSizeClassIndex(e);
-      this.removeActiveCanvasSize();
-      this.addNewActiveCanvasSize();
-      this.addClassActive();
-      this.removeClassScale();
-      changeCanvasSize(this.canvasElem, this.storage.state.canvasSizeIndex, CANVAS_SCALE_CLASSES);
-      this.frames.setFramesSize();
-      this.preview.setPreviewSize();
-      this.storage.drawImageOnCanvas();
-      this.frames.drawImageOnFrames();
+      this.setCanvasSize();
     });
   }
 
@@ -69,6 +60,20 @@ export default class CanvasSize {
         this.storage.state.canvasSizeIndex = CANVAS_SIZE_CLASSES.indexOf(item);
       }
     });
+  }
+
+  setCanvasSize() {
+    this.storage.setCanvasImage();
+    this.frames.setFramesImages();
+    this.removeActiveCanvasSize();
+    this.addNewActiveCanvasSize();
+    this.addClassActive();
+    this.removeClassScale();
+    changeCanvasSize(this.canvasElem, this.storage.state.canvasSizeIndex, CANVAS_SCALE_CLASSES);
+    this.frames.setFramesSize();
+    this.preview.setPreviewSize();
+    this.storage.drawImageOnCanvas();
+    this.frames.drawImageOnFrames();
   }
 
   removeActiveCanvasSize() {
