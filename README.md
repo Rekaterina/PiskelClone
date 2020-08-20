@@ -1,2 +1,3 @@
-# rekaterina-RS2019Q3
-Private repository for @rekaterina
+# Piskel Clone App
+#### Clone of an online editor for animated sprites Piskel
+#### Link to deploying : [https://rekaterina-piskel-clone.netlify.app/](https://rekaterina-piskel-clone.netlify.app/)
